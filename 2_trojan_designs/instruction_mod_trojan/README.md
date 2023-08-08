@@ -1,0 +1,1 @@
+Uses [PyRISCV-Disas](https://github.com/mbaharan/PyRISCV-Disas) for comments containing the disassembled instructions, thus, this is an optional requirement.

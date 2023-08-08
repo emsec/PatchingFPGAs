@@ -1,0 +1,262 @@
+200003e0 <before_trojan>:
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:53
+  asm volatile("before_trojan:");
+200003e0:	10000537          	lui	a0,0x10000
+200003e4:	01c50593          	addi	a1,a0,28 # 1000001c <main.ciphertext>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:54
+  const uint8_t *ciphertext = (uint8_t *) 0x1000001c; // verify this address each compile!
+200003e8:	d42e                	sw	a1,40(sp)
+200003ea:	ffeee5b7          	lui	a1,0xffeee
+200003ee:	dcc58593          	addi	a1,a1,-564 # ffeeddcc <_data_init_start+0xdfeec348>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:55
+  const uint8_t key_nsa[16] = {0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88,0x99,0xaa,0xbb,0xcc,0xdd,0xee,0xff};
+200003f2:	d22e                	sw	a1,36(sp)
+200003f4:	bbaaa5b7          	lui	a1,0xbbaaa
+200003f8:	98858593          	addi	a1,a1,-1656 # bbaa9988 <_data_init_start+0x9baa7f04>
+200003fc:	d02e                	sw	a1,32(sp)
+200003fe:	776655b7          	lui	a1,0x77665
+20000402:	54458593          	addi	a1,a1,1348 # 77665544 <_data_init_start+0x57663ac0>
+20000406:	ce2e                	sw	a1,28(sp)
+20000408:	332215b7          	lui	a1,0x33221
+2000040c:	10058593          	addi	a1,a1,256 # 33221100 <_data_init_start+0x1321f67c>
+20000410:	cc2e                	sw	a1,24(sp)
+20000412:	0521                	addi	a0,a0,8
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:56
+  const dif_uart_t *uart = (dif_uart_t *) 0x10000008; // verify this address each compile!
+20000414:	ca2a                	sw	a0,20(sp)
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:59
+    for (int i = 0; i < 4; ++i) {
+20000416:	c802                	sw	zero,16(sp)
+20000418:	a009                	j	2000041a <before_trojan+0x3a>
+2000041a:	4542                	lw	a0,16(sp)
+2000041c:	4591                	li	a1,4
+2000041e:	00b54463          	blt	a0,a1,20000426 <before_trojan+0x46>
+20000422:	a009                	j	20000424 <before_trojan+0x44>
+20000424:	a8b5                	j	200004a0 <before_trojan+0xc0>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:60
+        REG32(AES_KEY_SHARE0_0(0) + i * sizeof(uint32_t)) = ((uint32_t *)key_nsa)[i];
+20000426:	4542                	lw	a0,16(sp)
+20000428:	050a                	slli	a0,a0,0x2
+2000042a:	082c                	addi	a1,sp,24
+2000042c:	95aa                	add	a1,a1,a0
+2000042e:	0005c603          	lbu	a2,0(a1)
+20000432:	0015e693          	ori	a3,a1,1
+20000436:	0006c683          	lbu	a3,0(a3)
+2000043a:	06a2                	slli	a3,a3,0x8
+2000043c:	8e55                	or	a2,a2,a3
+2000043e:	0025e693          	ori	a3,a1,2
+20000442:	0006c683          	lbu	a3,0(a3)
+20000446:	0035e593          	ori	a1,a1,3
+2000044a:	0005c583          	lbu	a1,0(a1)
+2000044e:	05a2                	slli	a1,a1,0x8
+20000450:	8dd5                	or	a1,a1,a3
+20000452:	05c2                	slli	a1,a1,0x10
+20000454:	8dd1                	or	a1,a1,a2
+20000456:	40110637          	lui	a2,0x40110
+2000045a:	9532                	add	a0,a0,a2
+2000045c:	c10c                	sw	a1,0(a0)
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:61
+        REG32(AES_KEY_SHARE1_0(0) + i * sizeof(uint32_t)) = ((uint32_t *)key_share1)[i];
+2000045e:	4542                	lw	a0,16(sp)
+20000460:	050a                	slli	a0,a0,0x2
+20000462:	106c                	addi	a1,sp,44
+20000464:	95aa                	add	a1,a1,a0
+20000466:	0005c683          	lbu	a3,0(a1)
+2000046a:	0015e713          	ori	a4,a1,1
+2000046e:	00074703          	lbu	a4,0(a4)
+20000472:	0722                	slli	a4,a4,0x8
+20000474:	8ed9                	or	a3,a3,a4
+20000476:	0025e713          	ori	a4,a1,2
+2000047a:	00074703          	lbu	a4,0(a4)
+2000047e:	0035e593          	ori	a1,a1,3
+20000482:	0005c583          	lbu	a1,0(a1)
+20000486:	05a2                	slli	a1,a1,0x8
+20000488:	8dd9                	or	a1,a1,a4
+2000048a:	05c2                	slli	a1,a1,0x10
+2000048c:	8dd5                	or	a1,a1,a3
+2000048e:	02060613          	addi	a2,a2,32 # 40110020 <_data_init_start+0x2010e59c>
+20000492:	9532                	add	a0,a0,a2
+20000494:	c10c                	sw	a1,0(a0)
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:62
+    }
+20000496:	a009                	j	20000498 <before_trojan+0xb8>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:59
+    for (int i = 0; i < 4; ++i) {
+20000498:	4542                	lw	a0,16(sp)
+2000049a:	0505                	addi	a0,a0,1
+2000049c:	c82a                	sw	a0,16(sp)
+2000049e:	bfb5                	j	2000041a <before_trojan+0x3a>
+200004a0:	4511                	li	a0,4
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:63
+    for (int i = 4; i < AES_NUM_REGS_KEY; ++i) {
+200004a2:	c62a                	sw	a0,12(sp)
+200004a4:	a009                	j	200004a6 <before_trojan+0xc6>
+200004a6:	4532                	lw	a0,12(sp)
+200004a8:	45a1                	li	a1,8
+200004aa:	00b54463          	blt	a0,a1,200004b2 <before_trojan+0xd2>
+200004ae:	a009                	j	200004b0 <before_trojan+0xd0>
+200004b0:	a025                	j	200004d8 <before_trojan+0xf8>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:64
+        REG32(AES_KEY_SHARE0_0(0) + i * sizeof(uint32_t)) = 0x0;
+200004b2:	4532                	lw	a0,12(sp)
+200004b4:	050a                	slli	a0,a0,0x2
+200004b6:	401105b7          	lui	a1,0x40110
+200004ba:	952e                	add	a0,a0,a1
+200004bc:	00052023          	sw	zero,0(a0)
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:65
+        REG32(AES_KEY_SHARE1_0(0) + i * sizeof(uint32_t)) = 0x0;
+200004c0:	4532                	lw	a0,12(sp)
+200004c2:	050a                	slli	a0,a0,0x2
+200004c4:	02058593          	addi	a1,a1,32 # 40110020 <_data_init_start+0x2010e59c>
+200004c8:	952e                	add	a0,a0,a1
+200004ca:	00052023          	sw	zero,0(a0)
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:66
+    }
+200004ce:	a009                	j	200004d0 <before_trojan+0xf0>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:63
+    for (int i = 4; i < AES_NUM_REGS_KEY; ++i) {
+200004d0:	4532                	lw	a0,12(sp)
+200004d2:	0505                	addi	a0,a0,1
+200004d4:	c62a                	sw	a0,12(sp)
+200004d6:	bfc1                	j	200004a6 <before_trojan+0xc6>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:71
+    while (!(REG32(AES_STATUS(0)) & (0x1u << AES_STATUS_INPUT_READY))) { }
+200004d8:	a009                	j	200004da <before_trojan+0xfa>
+200004da:	40110537          	lui	a0,0x40110
+200004de:	5d28                	lw	a0,120(a0)
+200004e0:	8921                	andi	a0,a0,8
+200004e2:	e119                	bnez	a0,200004e8 <before_trojan+0x108>
+200004e4:	a009                	j	200004e6 <before_trojan+0x106>
+200004e6:	bfd5                	j	200004da <before_trojan+0xfa>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:72
+    for (int i = 0; i < AES_NUM_REGS_DATA; ++i) {
+200004e8:	c402                	sw	zero,8(sp)
+200004ea:	a009                	j	200004ec <before_trojan+0x10c>
+200004ec:	4522                	lw	a0,8(sp)
+200004ee:	4591                	li	a1,4
+200004f0:	00b54463          	blt	a0,a1,200004f8 <before_trojan+0x118>
+200004f4:	a009                	j	200004f6 <before_trojan+0x116>
+200004f6:	a0a1                	j	2000053e <before_trojan+0x15e>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:73
+        REG32(AES_DATA_IN_0(0) + i * sizeof(uint32_t)) = ((uint32_t *)key_share0)[i];
+200004f8:	4522                	lw	a0,8(sp)
+200004fa:	050a                	slli	a0,a0,0x2
+200004fc:	00ec                	addi	a1,sp,76
+200004fe:	95aa                	add	a1,a1,a0
+20000500:	0005c603          	lbu	a2,0(a1)
+20000504:	0015e693          	ori	a3,a1,1
+20000508:	0006c683          	lbu	a3,0(a3)
+2000050c:	06a2                	slli	a3,a3,0x8
+2000050e:	8e55                	or	a2,a2,a3
+20000510:	0025e693          	ori	a3,a1,2
+20000514:	0006c683          	lbu	a3,0(a3)
+20000518:	0035e593          	ori	a1,a1,3
+2000051c:	0005c583          	lbu	a1,0(a1)
+20000520:	05a2                	slli	a1,a1,0x8
+20000522:	8dd5                	or	a1,a1,a3
+20000524:	05c2                	slli	a1,a1,0x10
+20000526:	8dd1                	or	a1,a1,a2
+20000528:	40110637          	lui	a2,0x40110
+2000052c:	05060613          	addi	a2,a2,80 # 40110050 <_data_init_start+0x2010e5cc>
+20000530:	9532                	add	a0,a0,a2
+20000532:	c10c                	sw	a1,0(a0)
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:74
+    }
+20000534:	a009                	j	20000536 <before_trojan+0x156>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:72
+    for (int i = 0; i < AES_NUM_REGS_DATA; ++i) {
+20000536:	4522                	lw	a0,8(sp)
+20000538:	0505                	addi	a0,a0,1
+2000053a:	c42a                	sw	a0,8(sp)
+2000053c:	bf45                	j	200004ec <before_trojan+0x10c>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:79
+    while (!(REG32(AES_STATUS(0)) & (0x1u << AES_STATUS_OUTPUT_VALID))) { }
+2000053e:	a009                	j	20000540 <before_trojan+0x160>
+20000540:	40110537          	lui	a0,0x40110
+20000544:	5d28                	lw	a0,120(a0)
+20000546:	8911                	andi	a0,a0,4
+20000548:	e119                	bnez	a0,2000054e <before_trojan+0x16e>
+2000054a:	a009                	j	2000054c <before_trojan+0x16c>
+2000054c:	bfd5                	j	20000540 <before_trojan+0x160>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:80
+    for (int i = 0; i < AES_NUM_REGS_DATA; ++i) {
+2000054e:	c202                	sw	zero,4(sp)
+20000550:	a009                	j	20000552 <before_trojan+0x172>
+20000552:	4512                	lw	a0,4(sp)
+20000554:	4591                	li	a1,4
+20000556:	00b54463          	blt	a0,a1,2000055e <before_trojan+0x17e>
+2000055a:	a009                	j	2000055c <before_trojan+0x17c>
+2000055c:	a01d                	j	20000582 <before_trojan+0x1a2>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:81
+        ((uint32_t *)ciphertext)[i] = REG32(AES_DATA_OUT_0(0) + i * sizeof(uint32_t));
+2000055e:	4512                	lw	a0,4(sp)
+20000560:	050a                	slli	a0,a0,0x2
+20000562:	401105b7          	lui	a1,0x40110
+20000566:	06058593          	addi	a1,a1,96 # 40110060 <_data_init_start+0x2010e5dc>
+2000056a:	952e                	add	a0,a0,a1
+2000056c:	4108                	lw	a0,0(a0)
+2000056e:	55a2                	lw	a1,40(sp)
+20000570:	4612                	lw	a2,4(sp)
+20000572:	060a                	slli	a2,a2,0x2
+20000574:	95b2                	add	a1,a1,a2
+20000576:	c188                	sw	a0,0(a1)
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:82
+    }
+20000578:	a009                	j	2000057a <before_trojan+0x19a>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:80
+    for (int i = 0; i < AES_NUM_REGS_DATA; ++i) {
+2000057a:	4512                	lw	a0,4(sp)
+2000057c:	0505                	addi	a0,a0,1
+2000057e:	c22a                	sw	a0,4(sp)
+20000580:	bfc9                	j	20000552 <before_trojan+0x172>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:85
+  for (size_t i = 0; i < 16; ++i) {
+20000582:	c002                	sw	zero,0(sp)
+20000584:	a009                	j	20000586 <before_trojan+0x1a6>
+20000586:	4502                	lw	a0,0(sp)
+20000588:	45c1                	li	a1,16
+2000058a:	00b56463          	bltu	a0,a1,20000592 <before_trojan+0x1b2>
+2000058e:	a009                	j	20000590 <before_trojan+0x1b0>
+20000590:	a83d                	j	200005ce <before_trojan+0x1ee>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:88
+        while ((((volatile uint32_t *)uart->params.base_addr.base)[UART_STATUS_REG_OFFSET / sizeof(uint32_t)] >> UART_STATUS_TXFULL) & 0x1) { }
+20000592:	a009                	j	20000594 <before_trojan+0x1b4>
+20000594:	4552                	lw	a0,20(sp)
+20000596:	4108                	lw	a0,0(a0)
+20000598:	4908                	lw	a0,16(a0)
+2000059a:	8905                	andi	a0,a0,1
+2000059c:	c119                	beqz	a0,200005a2 <before_trojan+0x1c2>
+2000059e:	a009                	j	200005a0 <before_trojan+0x1c0>
+200005a0:	bfd5                	j	20000594 <before_trojan+0x1b4>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:89
+        ((volatile uint32_t *)uart->params.base_addr.base)[UART_WDATA_REG_OFFSET / sizeof(uint32_t)] = (ciphertext[i] & UART_WDATA_WDATA_MASK) << UART_WDATA_WDATA_OFFSET;
+200005a2:	5522                	lw	a0,40(sp)
+200005a4:	4582                	lw	a1,0(sp)
+200005a6:	952e                	add	a0,a0,a1
+200005a8:	00054503          	lbu	a0,0(a0) # 40110000 <_data_init_start+0x2010e57c>
+200005ac:	45d2                	lw	a1,20(sp)
+200005ae:	418c                	lw	a1,0(a1)
+200005b0:	cd88                	sw	a0,24(a1)
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:90
+        while (!((((volatile uint32_t *)uart->params.base_addr.base)[UART_STATUS_REG_OFFSET / sizeof(uint32_t)] >> UART_STATUS_TXIDLE) & 0x1)) { }
+200005b2:	a009                	j	200005b4 <before_trojan+0x1d4>
+200005b4:	4552                	lw	a0,20(sp)
+200005b6:	4108                	lw	a0,0(a0)
+200005b8:	4908                	lw	a0,16(a0)
+200005ba:	810d                	srli	a0,a0,0x3
+200005bc:	8905                	andi	a0,a0,1
+200005be:	e119                	bnez	a0,200005c4 <before_trojan+0x1e4>
+200005c0:	a009                	j	200005c2 <before_trojan+0x1e2>
+200005c2:	bfcd                	j	200005b4 <before_trojan+0x1d4>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:92
+  }
+200005c4:	a009                	j	200005c6 <before_trojan+0x1e6>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:85
+  for (size_t i = 0; i < 16; ++i) {
+200005c6:	4502                	lw	a0,0(sp)
+200005c8:	0505                	addi	a0,a0,1
+200005ca:	c02a                	sw	a0,0(sp)
+200005cc:	bf6d                	j	20000586 <before_trojan+0x1a6>
+opentitan/build-out/../sw/device/hsm_demo/hsm_demo.c:93
+  asm volatile("j before_trojan;");
+200005ce:	bd09                	j	200003e0 <before_trojan>
