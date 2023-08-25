@@ -1,0 +1,3 @@
+open_checkpoint trojan_after_rapidwright.dcp
+set_property IS_ENABLED 0 [get_drc_checks]
+write_bitstream -force trojan_after_rapidwright.bit

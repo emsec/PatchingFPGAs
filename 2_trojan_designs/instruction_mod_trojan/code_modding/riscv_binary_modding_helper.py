@@ -51,7 +51,9 @@ class Instruction:
         self.instr = None
         self.instr_offset = None
 
-    def decompress(self):
+        self.illegal = False
+
+    def decompress(self, quiet=False):
         # rewrite of https://github.com/lowRISC/ibex/blob/master/rtl/ibex_compressed_decoder.sv
         if not self.is_compressed:
             # already decompressed
@@ -182,7 +184,9 @@ class Instruction:
         else:
             pass
         if illegal_instr:
-            print("ILLEGAL INSTR, MTVAL=" + hex(self.rdata))
+            self.illegal = True
+            if not quiet:
+                print("ILLEGAL INSTR, MTVAL=" + hex(self.rdata))
         else:
             self.rdata = instr
         
@@ -297,104 +301,105 @@ class Instruction:
     def __repr__(self):
         return (hex(self.addr) + ": " + hex(self.rdata)[2:].zfill(self.bitwidth//4)) + (f"\t {self.instr} {self.instr_offset}" if self.instr else "")
 
-start_addr = int(sys.argv[1], 16)
+if __name__ == '__main__':
+    start_addr = int(sys.argv[1], 16)
 
-with open(sys.argv[2], "rb") as f:
-    mod_data = f.read()
+    with open(sys.argv[2], "rb") as f:
+        mod_data = f.read()
 
-i = 0
-mod_instructions = []
-while i < len(mod_data):
-    # fetch an instruction
-    instruction = Instruction(i + start_addr, mod_data[i:i+4])
+    i = 0
+    mod_instructions = []
+    while i < len(mod_data):
+        # fetch an instruction
+        instruction = Instruction(i + start_addr, mod_data[i:i+4])
 
-    # parse the instruction
-    instruction.parse()
+        # parse the instruction
+        instruction.parse()
 
-    # store
-    mod_instructions.append(instruction)
+        # store
+        mod_instructions.append(instruction)
 
-    # increment PC
-    i += 2 if instruction.is_compressed else 4
+        # increment PC
+        i += 2 if instruction.is_compressed else 4
 
-with open(sys.argv[3], "rb") as f:
-    f.seek(start_addr)
-    orig_data = f.read()
+    with open(sys.argv[3], "rb") as f:
+        f.seek(start_addr)
+        orig_data = f.read()
 
-i = 0
-addr = 0
-orig_instructions = []
-while i < len(mod_instructions):
-    # fetch an instruction
-    instruction = Instruction(addr + start_addr, orig_data[addr:addr+4])
+    i = 0
+    addr = 0
+    orig_instructions = []
+    while i < len(mod_instructions):
+        # fetch an instruction
+        instruction = Instruction(addr + start_addr, orig_data[addr:addr+4])
 
-    # store
-    orig_instructions.append(instruction)
+        # store
+        orig_instructions.append(instruction)
 
-    # increment PC
-    addr += 2 if instruction.is_compressed else 4
-    i += 1
+        # increment PC
+        addr += 2 if instruction.is_compressed else 4
+        i += 1
 
-# go through the list of both instructions, build an address map
-address_map_m2o = {}
-for i, mod_instr in enumerate(mod_instructions):
-    orig_instr = orig_instructions[i]
-    address_map_m2o[mod_instr.addr] = orig_instr.addr
+    # go through the list of both instructions, build an address map
+    address_map_m2o = {}
+    for i, mod_instr in enumerate(mod_instructions):
+        orig_instr = orig_instructions[i]
+        address_map_m2o[mod_instr.addr] = orig_instr.addr
 
-# go through the list of modded instructions, apply address translations
-new_instructions = {}
-for i, mod_instr in enumerate(mod_instructions):
-    orig_instr = orig_instructions[i]
-    print(f"{orig_instr}\t -> {mod_instr}")
-    current = address_map_m2o[mod_instr.addr]
-    if mod_instr.instr_offset:
-        # we have a branch / jump here
-        target = address_map_m2o[mod_instr.addr + mod_instr.instr_offset]
-        new_offset = target - current
-        print(f"MOD OFFSET TO {new_offset}")
-        mod_instr.instr_offset = new_offset
-        mod_instr.assemble()
-    # decompress the instruction (extra requirement)
-    mod_instr.decompress()
-    new_instructions[current] = mod_instr.rdata
+    # go through the list of modded instructions, apply address translations
+    new_instructions = {}
+    for i, mod_instr in enumerate(mod_instructions):
+        orig_instr = orig_instructions[i]
+        print(f"{orig_instr}\t -> {mod_instr}")
+        current = address_map_m2o[mod_instr.addr]
+        if mod_instr.instr_offset:
+            # we have a branch / jump here
+            target = address_map_m2o[mod_instr.addr + mod_instr.instr_offset]
+            new_offset = target - current
+            print(f"MOD OFFSET TO {new_offset}")
+            mod_instr.instr_offset = new_offset
+            mod_instr.assemble()
+        # decompress the instruction (extra requirement)
+        mod_instr.decompress()
+        new_instructions[current] = mod_instr.rdata
 
-if METHOD == 1:
-    data_array = []
-    init = start_addr >> 4
-elif METHOD == 2:
-    from pyriscv_disas import rv_disas
-    addr = start_addr
-    print("""always @(instr_addr_i) begin
+    if METHOD == 1:
+        data_array = []
+        init = start_addr >> 4
+    elif METHOD == 2:
+        from pyriscv_disas import rv_disas
+        addr = start_addr
+        print("""always @(instr_addr_i) begin
 case (instr_addr_i)""")
 
-for i in range(start_addr, orig_instructions[len(mod_instructions)-1].addr + 2, 2):
-    if i in new_instructions:
-        rdata = new_instructions[i]
-    else:
-        rdata = 0
-    rdata_bytes = int.to_bytes(rdata, 4, byteorder="big")
-    # output_file.write(rdata_bytes)
-    if METHOD == 1:
-        data_array.append(rdata_bytes)
-        if i == orig_instructions[len(mod_instructions)-1].addr:
-            data_array += [b"\x00\x00\x00\x00"] * (8 - len(data_array) % 8)
-        if len(data_array) == 8:
-            print(f"   .INIT_{hex(init)[2:].upper()}(256'h", end="")
-            for d in data_array[::-1]:
-                print("".join(hex(j)[2:].zfill(2) for j in d), end="")
-            print("),")
-            data_array = []
-            init += 1
-    elif METHOD == 2:
-        if rdata != 0:
-            addr_rshift = hex((addr >> 1)+0x10000000)[2:].zfill(8)
-            data = "".join(hex(i)[2:].zfill(2) for i in rdata_bytes)
-            machine = rv_disas(PC = addr)
-            disas = " // " + machine.disassemble(int(data,16)).format().strip("\x00")
-            print(f"    31'h{addr_rshift} : instr_mod = 32'h{data};{disas}")
-        addr += 2
+    for i in range(start_addr, orig_instructions[len(mod_instructions)-1].addr + 2, 2):
+        if i in new_instructions:
+            rdata = new_instructions[i]
+        else:
+            rdata = 0
+        rdata_bytes = int.to_bytes(rdata, 4, byteorder="big")
+        # output_file.write(rdata_bytes)
+        if METHOD == 1:
+            data_array.append(rdata_bytes)
+            if i == orig_instructions[len(mod_instructions)-1].addr:
+                data_array += [b"\x00\x00\x00\x00"] * (8 - len(data_array) % 8)
+            if len(data_array) == 8:
+                print(f"   .INIT_{hex(init)[2:].upper()}(256'h", end="")
+                for d in data_array[::-1]:
+                    print("".join(hex(j)[2:].zfill(2) for j in d), end="")
+                print("),")
+                data_array = []
+                init += 1
+        elif METHOD == 2:
+            if rdata != 0:
+                addr_rshift = hex((addr >> 1)+0x10000000)[2:].zfill(8)
+                data = "".join(hex(i)[2:].zfill(2) for i in rdata_bytes)
+                machine = rv_disas(PC = addr)
+                disas = " // " + machine.disassemble(int(data,16)).format().strip("\x00")
+                print(f"    31'h{addr_rshift} : instr_mod = 32'h{data};{disas}")
+            addr += 2
 
-if METHOD == 2:
-    print("""    default      : instr_mod = 32'h00000000;
+    if METHOD == 2:
+        print("""    default      : instr_mod = 32'h00000000;
 endcase
 end""")

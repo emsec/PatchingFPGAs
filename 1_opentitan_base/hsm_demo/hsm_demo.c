@@ -145,13 +145,10 @@ int main(void) {
     iv[i] = rcv_char;
   }
 
-  hsm_demo_aes_set_key(); // v2.0: set key only once
+  // set the AES key
+  hsm_demo_aes_set_key();
 
   while (true) {
-    // set the AES key
-    // just for demonstration purpose, typically the key could be set only once
-    // hsm_demo_aes_set_key(); // v1.0: set key periodically
-
     // encrypt the current IV
     hsm_demo_aes_encrypt(iv, 16, ciphertext);
     

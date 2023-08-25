@@ -5,18 +5,18 @@ logic trojan_active;
 logic trojan_active_reg_d;
 
 // top_earlgrey/u_aes/u_reg/u_data_in_%1%3..0%/q_reg[%2%31..0%] : Q -> top_earlgrey/u_aes/u_aes_core/u_aes_cipher_core/u_aes_cipher_control/state_q.*
-logic state_init_i [127:0];
+(* keep = "true" *) logic state_init_i [127:0];
 logic state_init_o [127:0];
 
 // top_earlgrey/u_aes/u_aes_core/key_init_q_reg[0][%1%3..0%][%2%31..0%] : Q -> top_earlgrey/u_aes/u_aes_core/u_aes_cipher_core/u_aes_cipher_control/key_full_q.*
-logic key_init_i [127:0];
+(* keep = "true" *) logic key_init_i [127:0];
 logic key_init_o [127:0];
 
 // top_earlgrey/u_xbar_main/u_sm1_27/u_devicefifo/reqfifo/ctrl_we_q_i_1 : O
-logic ctrl_we_i;
+(* keep = "true" *) logic ctrl_we_i;
 
 // top_earlgrey/u_aes/u_aes_core/u_aes_cipher_core/u_aes_cipher_control/FSM_sequential_aes_cipher_ctrl_cs_reg[%2..0%] : Q
-logic aes_cipher_ctrl_cs_i[2:0];
+(* keep = "true" *) logic aes_cipher_ctrl_cs_i[2:0];
 
 // top_earlgrey/u_clkmgr/u_clk_main_aes_cg/gen_xilinx.u_impl_xilinx/u_bufgce : O
 logic aes_clk_i;
