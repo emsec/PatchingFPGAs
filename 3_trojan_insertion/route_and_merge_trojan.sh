@@ -73,6 +73,10 @@ do
     java com.xilinx.rapidwright.util.RapidWright 2_router/reroute_fasm_base_to_mod.py $PROJECT_ROOT/trojan.dcp $ORIGINAL_FASM $PROJECT_ROOT/trojan_after_rapidwright.dcp $PROJECT_ROOT/trojan_after_rapidwright_part1.fasm $PROJECT_ROOT/trojan_after_rapidwright_priorities.txt
     if [ $? -ne 2 ]
     then
+        if [ $? -ne 0 ]
+        then
+            exit 1
+        fi
         break
     fi
 done
@@ -85,6 +89,10 @@ echo -e "$SEP\n"
 source $VIVADO_ROOT/settings64.sh
 cd $PROJECT_ROOT
 vivado -mode batch -source ../../3_trojan_insertion/2_router/write_bitstream.tcl
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
 cd "${0%/*}"
 
 # convert to fasm

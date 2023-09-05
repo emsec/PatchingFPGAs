@@ -6,14 +6,10 @@
 # - name: name of the cell
 # - signals: all input and output pins and connected signal names of the cell, e.g. "IN C SLICE_X..Y../AFF/C clk OUT Q SLICE_X..Y../AFF/Q ff_out_signal"
 
-#set output_file "extracted-aes-trojan-design-data-2"
-set output_file "extracted-binary-mod-trojan-design-data"
-#set output_file "extracted-binary-mod-trojan-tests-4-data"
-#set output_file "extracted-binary-mod-trojan-tests-5-data"
-#set output_file "extracted-binary-mod-trojan-tests-design-data"
-#set output_file "extracted-binary-mod-trojan-design-tests-2-data"
-set output_file "extracted-binary-mod-trojan-lutrom-design-data-2"
-#set output_file "extracted-tinylogicanalyzer-design-data"
+set output_file "extracted-tinylogicanalyzer-design-data"
+#set output_file "extracted-aesregistertrojan-design-data"
+#set output_file "extracted-instructionreplacementtrojan-design-data"
+#set output_file "extracted-instructionmodtrojan-design-data"
 
 set fo [open $output_file "w"]
 

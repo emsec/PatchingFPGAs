@@ -1,3 +1,12 @@
+set requested_data {
+    { method fdreout          signal instr_addr_i          cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_addr_q_reg[%31..1%]" }
+    { method net/lutout       signal instr_rdata_i         cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/instr_out[%31..0%]" }
+    { method bufgctrlout      signal clk_i                 cell "top_earlgrey/u_clkmgr/u_main_cg/i_cg/gen_xilinx.u_impl_xilinx/u_bufgce" }
+    { method emptysliceparts }
+}
+
+set output_file "extracted-tinylogicanalyzer-data"
+
 #set requested_data {
 #    { method lutout           signal ctrl_we_i             cell "top_earlgrey/u_xbar_main/u_sm1_27/u_devicefifo/reqfifo/ctrl_we_q_i_1" }
 #    { method fdreout          signal state_init_i          cell "top_earlgrey/u_aes/u_reg/u_data_in_%1%3..0%/q_reg[%2%31..0%]" }
@@ -9,120 +18,134 @@
 #    { method emptysliceparts }
 #}
 
-#set output_file "extracted-aes-trojan-data"
-
-
-# center: SLICE_X88Y59 SLICE_X82Y81
-
-set requested_data {
-    { method net/lutout       signal instr_addr_i           cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/D[%29..0%]" }
-    { method lutout           signal instr_rdata_i          cell "top_earlgrey/u_rv_core_ibex/fifo_i/rspfifo/g_fifo_regs\\\[2\\\].rdata_q\\\[2\\\]\\\[%31..0%\\\]_i_[12]"              cellregex 1 }
-    { method lutout/lutin     signal instr_rdata_o          cell "top_earlgrey/u_rv_core_ibex/fifo_i/rspfifo/g_fifo_regs\\\[2\\\].rdata_q\\\[2\\\]\\\[%31..0%\\\]_i_[12]"              cellregex 1 input_regex "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o\\\[.*" }
-    { method bufgctrlout      signal clk_i                  cell "top_earlgrey/u_clkmgr/u_main_cg/i_cg/gen_xilinx.u_impl_xilinx/u_bufgce" }
-    { method emptysliceparts }
-}
-
-set output_file "extracted-binary-mod-trojan-data"
+#set output_file "extracted-aesregistertrojan-data"
 
 #set requested_data {
-#    { method net/lutout       signal flash_host_rdata_i     cell "top_earlgrey/u_flash_eflash/flash_host_rdata[0]" }
-#    { method fdrein           signal flash_host_rdata_o     cell "top_earlgrey/u_tl_adapter_eflash/u_rspfifo/gen_normal_fifo.storage_reg[1][1]" }
+#    { method lutout           signal instr_rdata_i[25]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[31]_i_6" }
+#    { method lutout           signal instr_rdata_i[24]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[30]_i_3" }
+#    { method lutout           signal instr_rdata_i[23]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[29]_i_4" }
+#    { method lutout           signal instr_rdata_i[22]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[28]_i_6" }
+#    { method lutout           signal instr_rdata_i[21]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[27]_i_3" }
+#    { method lutout           signal instr_rdata_i[20]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[26]_i_4" }
+#    { method lutout           signal instr_rdata_i[19]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[25]_i_7" }
+#    { method lutout           signal instr_rdata_i[18]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[24]_i_7" }
+#    { method lutout           signal instr_rdata_i[17]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[23]_i_6" }
+#    { method lutout           signal instr_rdata_i[16]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[22]_i_3" }
+#    { method lutout           signal instr_rdata_i[15]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[21]_i_4" }
+#    { method lutout           signal instr_rdata_i[14]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[20]_i_2" }
+#    { method lutout           signal instr_rdata_i[13]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[19]_i_3" }
+#    { method lutout           signal instr_rdata_i[12]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[18]_i_5" }
+#    { method lutout           signal instr_rdata_i[11]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[17]_i_3" }
+#    { method lutout           signal instr_rdata_i[10]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[16]_i_3" }
+#    { method lutout           signal instr_rdata_i[9]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[15]_i_1" }
+#    { method lutout           signal instr_rdata_i[8]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[14]_i_1" }
+#    { method lutout           signal instr_rdata_i[7]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[13]_i_1" }
+#    { method lutout           signal instr_rdata_i[6]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[12]_i_1" }
+#    { method lutout           signal instr_rdata_i[5]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[7]_i_1" }
+#    { method lutout           signal instr_rdata_i[4]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[6]_i_1" }
+#    { method lutout           signal instr_rdata_i[3]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[5]_i_1" }
+#    { method lutout           signal instr_rdata_i[2]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[4]_i_1" }
+#    { method lutout           signal instr_rdata_i[1]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[3]_i_1" }
+#    { method lutout           signal instr_rdata_i[0]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[2]_i_1" }
+#    { method lutout/lutin     signal instr_rdata_o[19]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[31]_i_6" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[18]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[30]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[17]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[29]_i_4" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[16]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[28]_i_6" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[15]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[27]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[14]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[26]_i_4" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[13]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[25]_i_7" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[12]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[24]_i_7" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[11]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[23]_i_6" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[10]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[22]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[9]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[21]_i_4" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[8]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[20]_i_2" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[7]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[19]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[6]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[18]_i_5" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[5]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[17]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[4]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[16]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[3]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[15]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[2]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[14]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[1]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[13]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[0]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[12]_i_1" input_regex ".*" }
+#    { method bufgctrlout      signal clk_i                 cell "top_earlgrey/u_clkmgr/u_main_cg/i_cg/gen_xilinx.u_impl_xilinx/u_bufgce" }
 #    { method emptysliceparts }
 #}
 
-#set output_file "extracted-binary-mod-trojan-tests-data"
-
-set requested_data {
-    { method net/lutout       signal instr_addr_i           cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/D[%29..0%]" }
-    { method net/lutout       signal instr_rdata_i          cell "top_earlgrey/u_rv_core_ibex/instr_rdata[%7..0%]" }
-    { method fdrein           signal instr_rdata_o          cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/g_fifo_regs[2].rdata_q_reg[2][%7..0%]" }
-    { method emptysliceparts }
-}
-
-set output_file "extracted-binary-mod-trojan-tests-2-data"
-
-set requested_data {
-    { method fdreout          signal instr_addr_i           cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_addr_q_reg[%31..1%]" }
-    { method lutout           signal instr_rdata_i[31]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[31]_i_6" }
-    { method lutout           signal instr_rdata_i[30]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[30]_i_3" }
-    { method lutout           signal instr_rdata_i[29]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[29]_i_4" }
-    { method lutout           signal instr_rdata_i[28]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[28]_i_6" }
-    { method lutout           signal instr_rdata_i[27]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[27]_i_3" }
-    { method lutout           signal instr_rdata_i[26]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[26]_i_4" }
-    { method lutout           signal instr_rdata_i[25]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[25]_i_7" }
-    { method lutout           signal instr_rdata_i[24]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[24]_i_7" }
-    { method lutout           signal instr_rdata_i[23]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[23]_i_6" }
-    { method lutout           signal instr_rdata_i[22]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[22]_i_3" }
-    { method lutout           signal instr_rdata_i[21]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[21]_i_4" }
-    { method lutout           signal instr_rdata_i[20]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[20]_i_2" }
-    { method lutout           signal instr_rdata_i[19]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[19]_i_3" }
-    { method lutout           signal instr_rdata_i[18]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[18]_i_5" }
-    { method lutout           signal instr_rdata_i[17]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[17]_i_3" }
-    { method lutout           signal instr_rdata_i[16]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[16]_i_3" }
-    { method lutout           signal instr_rdata_i[15]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[15]_i_1" }
-    { method lutout           signal instr_rdata_i[14]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[14]_i_1" }
-    { method lutout           signal instr_rdata_i[13]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[13]_i_1" }
-    { method lutout           signal instr_rdata_i[12]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[12]_i_1" }
-    { method lutout           signal instr_rdata_i[11]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[11]_i_1" }
-    { method lutout           signal instr_rdata_i[10]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[10]_i_1" }
-    { method lutout           signal instr_rdata_i[9]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[9]_i_1" }
-    { method lutout           signal instr_rdata_i[8]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[8]_i_1" }
-    { method lutout           signal instr_rdata_i[7]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[7]_i_1" }
-    { method lutout           signal instr_rdata_i[6]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[6]_i_1" }
-    { method lutout           signal instr_rdata_i[5]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[5]_i_1" }
-    { method lutout           signal instr_rdata_i[4]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[4]_i_1" }
-    { method lutout           signal instr_rdata_i[3]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[3]_i_1" }
-    { method lutout           signal instr_rdata_i[2]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[2]_i_1" }
-    { method lutout           signal instr_rdata_i[1]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[1]_i_1" }
-    { method lutout           signal instr_rdata_i[0]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[0]_i_1" }
-    { method lutout           signal instr_rdata_id_o6_i_3_n_0  cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[6]_i_3"}
-    { method lutout           signal instr_rdata_id_o21_i_7_n_0 cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[21]_i_7"}
-    { method bufgctrlout      signal tinyla_buffer_write_clk    cell "top_earlgrey/u_clkmgr/u_main_cg/i_cg/gen_xilinx.u_impl_xilinx/u_bufgce" }
-    { method lutout/lutin     signal instr_rdata_o[31]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[31]_i_6" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[30]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[30]_i_3" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[29]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[29]_i_4" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[28]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[28]_i_6" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[27]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[27]_i_3" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[26]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[26]_i_4" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[25]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[25]_i_7" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[24]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[24]_i_7" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[23]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[23]_i_6" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[22]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[22]_i_3" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[21]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[21]_i_4" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[20]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[20]_i_2" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[19]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[19]_i_3" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[18]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[18]_i_5" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[17]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[17]_i_3" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[16]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[16]_i_3" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[15]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[15]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[14]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[14]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[13]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[13]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[12]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[12]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[11]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[11]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[10]       cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[10]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[9]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[9]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[8]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[8]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[7]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[7]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[6]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[6]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[5]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[5]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[4]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[4]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[3]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[3]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[2]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[2]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[1]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[1]_i_1" input_regex ".*" }
-    { method lutout/lutin     signal instr_rdata_o[0]        cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[0]_i_1" input_regex ".*" }
-    { method emptysliceparts }
-}
-
-set output_file "extracted-binary-mod-trojan-data"
+#set output_file "extracted-instructionreplacementtrojan-data"
 
 #set requested_data {
-#    { method lutout           signal lutout_i        cell "led_OBUF[0]_inst_i_2" }
-#    { method fdreout          signal logic_i         cell "sw_state_reg[0]" }
-#    { method lutout/lutin     signal decomposed_o    cell "led_OBUF[0]_inst_i_2"  input_regex ".*" }
-#    { method fdreout/lutin    signal internal_o      cell "sw_state_reg[7]"       input_regex ".*" }
+#    { method fdreout          signal instr_addr_i          cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_addr_q_reg[%31..1%]" }
+#    { method lutout           signal instr_rdata_i[31]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[31]_i_6" }
+#    { method lutout           signal instr_rdata_i[30]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[30]_i_3" }
+#    { method lutout           signal instr_rdata_i[29]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[29]_i_4" }
+#    { method lutout           signal instr_rdata_i[28]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[28]_i_6" }
+#    { method lutout           signal instr_rdata_i[27]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[27]_i_3" }
+#    { method lutout           signal instr_rdata_i[26]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[26]_i_4" }
+#    { method lutout           signal instr_rdata_i[25]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[25]_i_7" }
+#    { method lutout           signal instr_rdata_i[24]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[24]_i_7" }
+#    { method lutout           signal instr_rdata_i[23]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[23]_i_6" }
+#    { method lutout           signal instr_rdata_i[22]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[22]_i_3" }
+#    { method lutout           signal instr_rdata_i[21]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[21]_i_4" }
+#    { method lutout           signal instr_rdata_i[20]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[20]_i_2" }
+#    { method lutout           signal instr_rdata_i[19]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[19]_i_3" }
+#    { method lutout           signal instr_rdata_i[18]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[18]_i_5" }
+#    { method lutout           signal instr_rdata_i[17]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[17]_i_3" }
+#    { method lutout           signal instr_rdata_i[16]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[16]_i_3" }
+#    { method lutout           signal instr_rdata_i[15]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[15]_i_1" }
+#    { method lutout           signal instr_rdata_i[14]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[14]_i_1" }
+#    { method lutout           signal instr_rdata_i[13]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[13]_i_1" }
+#    { method lutout           signal instr_rdata_i[12]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[12]_i_1" }
+#    { method lutout           signal instr_rdata_i[11]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[11]_i_1" }
+#    { method lutout           signal instr_rdata_i[10]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[10]_i_1" }
+#    { method lutout           signal instr_rdata_i[9]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[9]_i_1" }
+#    { method lutout           signal instr_rdata_i[8]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[8]_i_1" }
+#    { method lutout           signal instr_rdata_i[7]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[7]_i_1" }
+#    { method lutout           signal instr_rdata_i[6]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[6]_i_1" }
+#    { method lutout           signal instr_rdata_i[5]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[5]_i_1" }
+#    { method lutout           signal instr_rdata_i[4]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[4]_i_1" }
+#    { method lutout           signal instr_rdata_i[3]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[3]_i_1" }
+#    { method lutout           signal instr_rdata_i[2]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[2]_i_1" }
+#    { method lutout           signal instr_rdata_i[1]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[1]_i_1" }
+#    { method lutout           signal instr_rdata_i[0]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[0]_i_1" }
+#    { method lutout           signal instr_rdata_id_o6_i_3_n_0  cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[6]_i_3"}
+#    { method lutout           signal instr_rdata_id_o21_i_7_n_0 cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[21]_i_7"}
+#    { method bufgctrlout      signal clk_i                 cell "top_earlgrey/u_clkmgr/u_main_cg/i_cg/gen_xilinx.u_impl_xilinx/u_bufgce" }
+#    { method lutout/lutin     signal instr_rdata_o[31]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[31]_i_6" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[30]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[30]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[29]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[29]_i_4" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[28]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[28]_i_6" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[27]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[27]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[26]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[26]_i_4" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[25]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[25]_i_7" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[24]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[24]_i_7" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[23]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[23]_i_6" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[22]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[22]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[21]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[21]_i_4" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[20]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[20]_i_2" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[19]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[19]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[18]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[18]_i_5" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[17]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[17]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[16]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_id_o[16]_i_3" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[15]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[15]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[14]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[14]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[13]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[13]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[12]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[12]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[11]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[11]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[10]     cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[10]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[9]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[9]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[8]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[8]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[7]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[7]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[6]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[6]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[5]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[5]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[4]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[4]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[3]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[3]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[2]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[2]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[1]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[1]_i_1" input_regex ".*" }
+#    { method lutout/lutin     signal instr_rdata_o[0]      cell "top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_rdata_c_id_o[0]_i_1" input_regex ".*" }
+#    { method emptysliceparts }
 #}
 
-#set output_file "extracted-lut-decomp-data"
+#set output_file "extracted-instructionmodtrojan-data"
 
 # lutout:
 # - connect the input to the net that is connected with the output net of the respective O pin

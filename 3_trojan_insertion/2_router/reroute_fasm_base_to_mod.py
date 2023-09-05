@@ -122,6 +122,11 @@ def fasmFindPIPsAndSinksFromSinkPinInst(sitePinInst, fasmPIPDict, verbose=False)
         fasmPIPs = fasm_find_pip_reverse(fasmPIPDict, wire)
         if verbose: print("fasmPIPs: {}".format(fasmPIPs))
         if not fasmPIPs:
+            if routeNode.getWireName()[-3:] in ["_AX", "_BX", "_CX", "_DX"]:
+                # in case we don't find a route to these pins, it is quite likely we have a route here that originally comes from the same slice LUT to the FF. We cannot do anything here but later need to ensure the replaced slice configuration bits for the ?X-Muxing to the Flip Flop instead of the LUT source.
+                raise Exception("Warning! Be extra careful when we assume things here and please verify yourself beforehand at this position. Could mean that there is nothing to do, but could occur otherwise aswell! We did never reroute a same slice LUT->FF net before")
+                pip = backPIPs[0]
+                break
             fasmPIPs = wire.getBackwardPIPs()
             if verbose: print("fasmPIPs: {}".format(fasmPIPs))
             if "LOGIC_OUT" in wire.getWireName() or not fasmPIPs:
@@ -750,7 +755,7 @@ def findRoute(q, snk, usedNodes, verbose=False, routeThroughs=True, blockedWires
             # BUG: we sometimes route through BUFR cells in the IOIs, it is unsure if we can
             # successfully merge these, so better keep them out.
             if "IOI" in nextNode.getName():
-                print("SKIP IOI: " + nextNode.getName())
+                print("SKIP IOI: " + nextNode.getName() + " (sink is: " + str(snk) + " routed via " + str(curr.getPIPsBackToSource()) + ")")
                 continue
             # also check if the any of the wire's connections connect back to the wire. This could happen for instance with LH/LV wires as they can be driven from multiple locations (displayed in pink in vivado)
             wireNode = RouteNode(wire.getTile(), wire.getWireIndex()) # we need to build a clean RouteNode for checking the PIPs required
@@ -888,11 +893,11 @@ def fasm_find_pip(fasmPIPs, wire):
 
 def fasm_find_pip_reverse(fasmPIPs, wire):
     tile = wire.getTile()
-    if tile not in fasmPIPDict:
+    if tile not in fasmPIPs:
         return None
     wireName = wire.getWireName()
     sources = []
-    for fasmsource, fasmsinks in fasmPIPDict[tile].items():
+    for fasmsource, fasmsinks in fasmPIPs[tile].items():
         if wireName in fasmsinks:
             sourcePIPs = [x for x in tile.getBackwardPIPs(wire.getWireIndex()) if x.getStartWireIndex() == tile.getWireIndex(fasmsource)]
             if not sourcePIPs:

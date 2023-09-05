@@ -1,10 +1,10 @@
 module top(
     );
 
-// top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/D[%29..0%] : <- O
+// top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/gen_prefetch_buffer.prefetch_buffer_i/fifo_i/instr_addr_q_reg[%31..1%] : <- O
 logic [30:0] instr_addr_i; // shifted by one bit to the right
 
-// top_earlgrey/u_rv_core_ibex/fifo_i/rspfifo/g_fifo_regs[2].rdata_q[2][%31..0%]_i_1/2 : <- O
+// top_earlgrey/u_rv_core_ibex/u_core/if_stage_i/instr_out[%31..0%] : <- O
 logic [31:0] instr_rdata_i;
 
 // top_earlgrey/u_clkmgr/u_main_cg/i_cg/gen_xilinx.u_impl_xilinx/u_bufgce

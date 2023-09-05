@@ -18,11 +18,11 @@ with open(sys.argv[1], "r") as f:
             addr_i = int(addr_s, 16)
             rdata_b = int.to_bytes(int(rdata_s, 16), 4, "little")
             instr = Instruction(addr_i, rdata_b)
-            instr.decompress(True)
+            #instr.decompress(True)
             if instr.illegal:
                 continue
-            if addr_i == 0x83ba:
-                print(f"{line} -> {hex(addr_i)}: {rdata_s} uncompressed: {hex(instr.rdata)}")
+            #if addr_i == 0x83ba:
+            #    print(f"{line} -> {hex(addr_i)}: {rdata_s} uncompressed: {hex(instr.rdata)}")
             while addr_i in instrs.keys():
                 addr_i += 0x100000000 
             instrs[addr_i] = instr.rdata
@@ -31,8 +31,10 @@ print("START")
 
 ALLOWED_ADDRS = [0x20000b2e, 0x20000b4c, 0x200002d8]
 
-value = 0x04812423
-full_mask = 0xfffff07c
+#value = 0x04812423
+#full_mask = 0xfffff07c
+value = 0xc4a2
+full_mask = 0xfffff0fc
 
 bitwidth = bin(full_mask).count('1')
 print(f"full mask contains {bitwidth} bits")
@@ -57,6 +59,7 @@ for fixed_bits in range(bitwidth, 0, -1):
         # now that we have a mask, check all instructions against this
         for addr, instr in instrs.items():
             if instr & mask == looking_for and addr not in ALLOWED_ADDRS:
+                #print(f"failed for {hex(addr)}: {hex(instr)}")
                 break
         else:
             print(f"found a valid permutation for {fixed_bits} bits: {hex(mask)}")
