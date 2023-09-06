@@ -12,7 +12,7 @@ This repository is work in progress.
 How To
 ======
 
-Information: To save work during creation of the placement and clock routing constraints, it is possible to skip steps 2-13 by using the prepared working constraints file supplied in the respective trojan design folder.
+Information: To save work during creation of the placement and clock routing constraints, it is possible to skip steps 7-12 by using the prepared working constraints file supplied in the respective trojan design folder.
 
 Information: Data collected from steps 2-4 could also originate from reverse engineering means out of the target bitstream instead. This is however not covered in this research work. If data is collected by other means, no information from the original design is required for modding bitstreams.
 
@@ -22,17 +22,16 @@ Information: Data collected from steps 2-4 could also originate from reverse eng
 4. In the Tcl Console of the base design checkpoint, with `cd <git path>/3_trojan_insertion/1_placer` change to the folder containing the script and run `source ./extract_placement_and_dummy_cells.tcl`
 5. In a terminal, change to the folder `3_trojan_insertion/1_placer` and run `python generate_dummy_cells_and_constraints.py extracted-<trojan>-data <trojan>-dummies.sv <trojan>.xdc`
 6. Append contents of the `-dummies.sv` file in the opened vivado project into the top module
-7. Add the `.xdc` file to the vivado project as constraints
-8. Synthesize and Place & Route (Click on ``Run Implementation'')
-9. Uncomment the respective `set output_file` line in the `3_trojan_insertion/1_placer/extract_design_cells.tcl` script
-10. In the Tcl Console of Vivado, run `source ./extract_design_cells.tcl`
-11. In the terminal, re-run the generate script with additional parameters `python generate_dummy_cells_and_constraints.py extracted-<trojan>-data <trojan>-dummies.sv <trojan>.xdc extracted-<trojan>-design-data SLICE_X105Y81` where `SLICE_X105Y81` denotes the center of the region of interest, so cells that have no placement details will be placed in the near of the center
-12. Replace the constraints with the new generated ones
-13. Add / replace extra constraints out of the respective section `Custom Constraints` below in the constraints file and reorder such that vivado doesn't return any critical warnings due to placement conflicts and all cells are placed (useful Tcl command `get_cells -filter { IS_BEL_FIXED == 0 && NAME !~ GND* && NAME !~ VCC* }`)
-14. Click on ``Run Implementation''
-15. Change to the trojan design directory in the Tcl Console of Vivado `cd ../../2_trojan_designs/<trojan>`
-16. Write checkpoint and EDIF netlist by entering `write_checkpoint trojan.dcp; write_edif trojan.edf`
-17. Run the custom routing and merging script in a shell in the trojan design's directory with `../../3_trojan_insertion/route_and_merge_trojan.sh .`
+7. Synthesize and Place & Route (Click on ``Run Implementation'')
+8. Uncomment the respective `set output_file` line in the `3_trojan_insertion/1_placer/extract_design_cells.tcl` script
+9. In the Tcl Console of Vivado, run `source ./extract_design_cells.tcl`
+10. In the terminal, re-run the generate script with additional parameters `python generate_dummy_cells_and_constraints.py extracted-<trojan>-data <trojan>-dummies.sv <trojan>.xdc extracted-<trojan>-design-data SLICE_X105Y81` where `SLICE_X105Y81` denotes the center of the region of interest, so cells that have no placement details will be placed in the near of the center
+11. Add the `.xdc` file to the vivado project as constraints
+12. Add / replace extra constraints out of the respective section `Custom Constraints` below in the constraints file and reorder such that vivado doesn't return any critical warnings due to placement conflicts and all cells are placed (useful Tcl command `get_cells -filter { IS_BEL_FIXED == 0 && NAME !~ GND* && NAME !~ VCC* }`)
+13. Click on ``Run Implementation''
+14. Change to the trojan design directory in the Tcl Console of Vivado `cd ../../2_trojan_designs/<trojan>`
+15. Write checkpoint and EDIF netlist by entering `write_checkpoint trojan.dcp; write_edif trojan.edf`
+16. Run the custom routing and merging script in a shell in the trojan design's directory with `../../3_trojan_insertion/route_and_merge_trojan.sh .`
 
 Custom Constraints
 ------------------
