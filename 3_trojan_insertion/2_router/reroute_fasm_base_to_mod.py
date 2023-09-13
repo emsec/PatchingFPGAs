@@ -621,7 +621,7 @@ def routeNet(net, usedNodes, fasm, design=None, blockedWiresForNet={}):
                 q.add(RouteNode(pip.getTile(),pip.getEndWireIndex()))
         #if net.name == "instr_rdata_o[15]": print("=== route sink {} ===".format(sink))
         print("find Route to {}".format(sink.getRouteNode()))
-        path, level = findRoute(q,sink.getRouteNode(), usedNodesCopy, routeThroughs=False, verbose=False, blockedWiresForNet=blockedWiresForNet, netName=net.name) #(net.name == "instr_rdata_o[15]")) # verbose=(sink.getSite().getName() == "SLICE_X149Y96" and sink.getName() == "A5"))
+        path, level = findRoute(q, sink.getRouteNode(), usedNodesCopy, routeThroughs=False, verbose=False, blockedWiresForNet=blockedWiresForNet, netName=net.name) #(net.name == "instr_rdata_o[15]")) # verbose=(sink.getSite().getName() == "SLICE_X149Y96" and sink.getName() == "A5"))
         if path == None:
             raise RoutingFailedError(net, sink)
         elif path: # if path is empty, nothing seems to be required!
@@ -673,6 +673,14 @@ def findRoute(q, snk, usedNodes, verbose=False, routeThroughs=True, blockedWires
     # We'll keep track of where we have visited and a watchdog timer
     visited = HashSet()
     watchdog = 50000000 # last three 0
+
+    if snk.getName() == "CFG_CENTER_MID_X61Y136/CFG_CENTER_BSCAN1_TDO":
+        # FIXME: optimized routing for TDO pin of BSCAN as this seems to be broken a bit in RapidWright, or at least in the cost function we use here
+        snk = RouteNode(design.getDevice().getWire("INT_L_X24Y123/IMUX_L33").getNode())
+        print("Special Sink of BSCAN_TDO found, routing the last PIP manually...")
+        bscan_tdo = True
+    else:
+        bscan_tdo = False
     
     # While we still have nodes to look at, keep expanding
     while(not q.isEmpty()):
@@ -681,12 +689,16 @@ def findRoute(q, snk, usedNodes, verbose=False, routeThroughs=True, blockedWires
             print("Queue:", curr, "Connections:", curr.getConnections(), "Sink:", snk)
         if(curr.equals(snk)):
             # print "Visited Wire Count: " + str(visited.size())
-            # We've found the sink, recover our trail of PIPs 
+            # We've found the sink, recover our trail of PIPs
+            pips = curr.getPIPsBackToSource()
             if verbose:
-                global pips
-                pips = curr.getPIPsBackToSource()
                 print(pips)
-            return curr.getPIPsBackToSource(), curr.getLevel()
+            if bscan_tdo:
+                # hotfix cf. above
+                print("Special Sink of BSCAN_TDO, adding the last PIP now...")
+                last_pip = [wire for wire in curr.getConnections() if wire.getTile().getName().startswith("CFG_")][0].getForwardPIPs()[0]
+                pips = [last_pip] + pips
+            return pips, curr.getLevel()
         
         visited.add(curr)
         watchdog = watchdog - 1
@@ -781,7 +793,6 @@ def findRoute(q, snk, usedNodes, verbose=False, routeThroughs=True, blockedWires
             q.add(nextNode)
     
     if verbose:
-        global pips
         pips = curr.getPIPsBackToSource()
         print(pips)
                 
