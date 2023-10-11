@@ -1,0 +1,1 @@
+The OpenOCD version used here needs to be patched with the patch found in `tinylogicanalyzer.patch`. The base source tree [9a877a](https://sourceforge.net/p/openocd/code/ci/9a877a) is used as a base.

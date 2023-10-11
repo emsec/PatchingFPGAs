@@ -1,0 +1,138 @@
+--- a/src/pld/virtex2.c
++++ b/src/pld/virtex2.c
+@@ -23,6 +23,7 @@
+ #include "virtex2.h"
+ #include "xilinx_bit.h"
+ #include "pld.h"
++#include <helper/log.h>
+ 
+ static int virtex2_set_instr(struct jtag_tap *tap, uint32_t new_instr)
+ {
+@@ -125,6 +126,63 @@ static int virtex2_read_stat(struct pld_device *pld_device, uint32_t *status)
+ 	return ERROR_OK;
+ }
+ 
++#define TINYLA_USER1 0x02
++
++static int tinyla_run(struct pld_device *pld_device) {
++	/* Put TAP into state where it can talk to the debug interface
++	 * by shifting in correct value to IR.
++	 */
++
++	/* Ensure TAP is reset - maybe not necessary*/
++	jtag_add_tlr();
++
++	struct virtex2_pld_device *virtex2_info = pld_device->driver_priv;
++	struct jtag_tap *tap = virtex2_info->tap;
++	struct scan_field scan_field;
++	uint8_t ir_value = TINYLA_USER1;
++
++	scan_field.num_bits = tap->ir_length;
++	scan_field.out_value = &ir_value;
++	scan_field.in_value = NULL;
++
++	jtag_add_ir_scan(tap, &scan_field, TAP_IDLE);
++
++	return jtag_execute_queue();
++}
++
++static int tinyla_dump(struct pld_device *pld_device, const char *filename) {
++	FILE *output_file;
++
++	if (!filename)
++		return ERROR_COMMAND_SYNTAX_ERROR;
++
++	output_file = fopen(filename, "wb");
++	if (output_file == NULL) {
++		LOG_ERROR("couldn't open %s: %s", filename, strerror(errno));
++		return ERROR_FAIL;
++	}
++
++	struct virtex2_pld_device *virtex2_info = pld_device->driver_priv;
++	struct jtag_tap *tap = virtex2_info->tap;
++	struct scan_field scan_field;
++
++	uint8_t buffer[2048];
++
++	scan_field.num_bits = 2048 * 8;
++	scan_field.out_value = NULL;
++	scan_field.in_value = buffer;
++
++	jtag_add_dr_scan(tap, 1, &scan_field, TAP_DRPAUSE);
++	jtag_execute_queue();
++
++	jtag_add_tlr();
++
++	fwrite(buffer, 1, 2048, output_file);
++	fclose(output_file);
++
++	return ERROR_OK;
++}
++
+ static int virtex2_load(struct pld_device *pld_device, const char *filename)
+ {
+ 	struct virtex2_pld_device *virtex2_info = pld_device->driver_priv;
+@@ -194,6 +252,42 @@ COMMAND_HANDLER(virtex2_handle_read_stat_command)
+ 	return ERROR_OK;
+ }
+ 
++COMMAND_HANDLER(virtex2_handle_tinyla_run_command)
++{
++	struct pld_device *device;
++
++	if (CMD_ARGC < 1)
++		return ERROR_COMMAND_SYNTAX_ERROR;
++
++	unsigned dev_id;
++	COMMAND_PARSE_NUMBER(uint, CMD_ARGV[0], dev_id);
++	device = get_pld_device_by_num(dev_id);
++	if (!device) {
++		command_print(CMD, "pld device '#%s' is out of bounds", CMD_ARGV[0]);
++		return ERROR_OK;
++	}
++
++	return tinyla_run(device);
++}
++
++COMMAND_HANDLER(virtex2_handle_tinyla_dump_command)
++{
++	struct pld_device *device;
++
++	if (CMD_ARGC < 2)
++		return ERROR_COMMAND_SYNTAX_ERROR;
++
++	unsigned dev_id;
++	COMMAND_PARSE_NUMBER(uint, CMD_ARGV[0], dev_id);
++	device = get_pld_device_by_num(dev_id);
++	if (!device) {
++		command_print(CMD, "pld device '#%s' is out of bounds", CMD_ARGV[0]);
++		return ERROR_OK;
++	}
++
++	return tinyla_dump(device, CMD_ARGV[1]);
++}
++
+ PLD_DEVICE_COMMAND_HANDLER(virtex2_pld_device_command)
+ {
+ 	struct jtag_tap *tap;
+@@ -229,6 +323,20 @@ static const struct command_registration virtex2_exec_command_handlers[] = {
+ 		.help = "read status register",
+ 		.usage = "pld_num",
+ 	},
++	{
++		.name = "tinyla_run",
++		.mode = COMMAND_EXEC,
++		.handler = virtex2_handle_tinyla_run_command,
++		.help = "run the tiny logic analyzer (if programmed)",
++		.usage = "pld_num",
++	},
++	{
++		.name = "tinyla_dump",
++		.mode = COMMAND_EXEC,
++		.handler = virtex2_handle_tinyla_dump_command,
++		.help = "dump trace of tiny logic analyzer to file",
++		.usage = "pld_num filename",
++	},
+ 	COMMAND_REGISTRATION_DONE
+ };
+ static const struct command_registration virtex2_command_handler[] = {
