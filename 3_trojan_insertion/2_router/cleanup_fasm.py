@@ -5,8 +5,8 @@ This script is step 4 of the how-to in the "reroute_fasm_base_to_mod" script.
 Thus, after "reroute_fasm_base_to_mod" the "output.dcp" needs to be converted
 to a bitstream (with Vivado) and then to a .fasm (with prjxray) "output.fasm".
 Then, this script is run with all the files. Result is a "part2.fasm" which
-then should be again checked for any conflicts and then be applied using
-Julian's script BUT after the part1! (Step 5 of the How-to).
+then should be again checked for any conflicts and then be applied using the
+bitstream tool BUT after the part1! (Step 5 of the How-to).
 
 ATTENTION: This script is quite dumb and expects inserted circuit to be in
 completely free CLBs (except the i_ and o_ connecting dummy cells!) Otherwise

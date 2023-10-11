@@ -7,7 +7,7 @@ Thus, after "reroute_fasm_base_to_mod" the "output.dcp" needs to be converted
 to a bitstream (with Vivado) and then to a .fasm (with prjxray) "output.fasm".
 Then, this script is run with all the files (also "output2.fasm" from the
 reroute script). Result is a "to_merge.fasm" which then should be again checked
-for any conflicts and then be applied using Julian's script (Step 5 of the
+for any conflicts and then be applied using the bitstream tool (Step 5 of the
 How-to).
 """
 import re
