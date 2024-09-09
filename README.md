@@ -201,3 +201,10 @@ set_property FIXED_ROUTE { CLK_BUFG_BUFGCTRL5_O \
  { HCLK_L_X148Y78/HCLK_LEAF_CLK_B_TOPL4 INT_L_X58Y80/GCLK_L_B10_EAST CLK0 CLBLM_L_CLK } \
  HCLK_L_X142Y78/HCLK_LEAF_CLK_B_TOPL4 INT_L_X56Y84/GCLK_L_B10_EAST CLK0 CLBLL_L_CLK } [get_nets "clk_i"];
 ```
+
+License
+=======
+
+These tools are licensed under MIT License to encourage collaboration with other
+research groups and contributions from the industry. Please refer to the
+license file for further information.
